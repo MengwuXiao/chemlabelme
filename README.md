@@ -9,6 +9,25 @@ ChemLabelMe is a tool used for annotating and correcting the correspondence betw
 https://mwxiao.com/chemlabelme/chemlabelme.mp4  
 
 
+# Usage   
+## step 1  
+```
+conda create -n py38 python=3.8  
+conda activate py38  
+pip install labelme  
+```  
+
+## step 2  
+Find the labelme folder (path to Anaconda3\envs\py38\Lib\site-packages\labelme), delete all files inside, and copy this code to that folder.  
+
+## step 3  
+run modified Labelme using Anaconda Prompt.   
+```   
+conda activate py38  
+labelme   
+```  
+
+
 ---  
 # Chinese version of README   
 
@@ -17,3 +36,22 @@ ChemLabelMe是一个用于标注和校正论文/专利中化学结构与化学�
 # 实例视频  
 https://mwxiao.com/chemlabelme/chemlabelme.mp4  
 
+
+# 用法  
+## 步骤一  
+创建Python 3.8环境，并安装labelme。 注：Python 3.10暂时会报错。  
+```
+conda create -n py38 python=3.8  
+conda activate py38  
+pip install labelme  
+```  
+
+## 步骤二  
+找到LabelMe文件夹 (一般在Anaconda3\envs\py38\Lib\site-packages\labelme)，删除该文件夹所有文件，将本项目代码复制到该文件夹。  
+
+## 步骤三   
+通过Anaconda Prompt运行修改后的LabelMe。    
+```   
+conda activate py38  
+labelme   
+```   
