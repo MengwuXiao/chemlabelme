@@ -1,9 +1,19 @@
 # ChemLabelMe
-ChemLabelMe是基于LabelMe（https://github.com/wkentaro/labelme ）修改的化学结构式图片及其索引标注校正工具，主要用于辅助CarsiChemIE（https://github.com/carbonsilicon-ai/CarsiChemIE ）数据集的人工校正。
-A chemical structure image and its index annotation correction tool based on LabelMe ( https://github.com/wkentaro/labelme ), mainly used to assist manual correction of the CarsiChemIE (https://github.com/carbonsilicon-ai/CarsiChemIE) dataset.   
 
-本项目为加快CarsiChemIE数据集人工校正工作，通过修改LabelMe 代码开发了适合本项目化学结构标签与索引、化学名等信息的快速匹配校正工具。修改代码后，主要增加以下功能：显示标注框ID、标签栏显示ID、非化学结构标签在标签栏缩进、双击标注框实现化学结构标签（1）与其他标签的快速匹配、增加提示窗口等。   
-To accelerate the manual calibration of the CarsiChemIE dataset, this project modified the LabelMe code and developed a tool for fast matching and calibration of chemical structure labels, indexes, chemical names, and other information. After modifying the code, the following features were mainly added: displaying the ID of the annotation box, displaying the ID in the label bar, indentation of non chemical structure labels in the label bar, double-click the annotation box to achieve quick matching of chemical structure labels with other labels, and adding prompt pop-up window.  
+ChemLabelMe is a tool used for annotating and correcting the correspondence between chemical structures and chemical information (ID, chemical name, properties) in papers/patents, and has been used to assist in manual correction of the CarsiChemIE dataset (https://github.com/carbonsilicon-ai/CarsiChemIE ). This software is modified based on LabelMe (https://github.com/wkentaro/labelme ). After modifying the code, the following functions were mainly added: displaying annotation box IDs, displaying IDs in the label bar, indentation of non chemical structure labels in the label bar, double-click annotation boxes to achieve quick matching of chemical structure labels (1) with other labels, adding prompt windows, etc. Compared to LabelMe, the modified software can improve the accuracy and efficiency of manual correction of corresponding relationships.
+
+ ![screenshot of the ChemLabelMe](image/example.jpg "screenshot of the ChemLabelMe")
+
 
 # example video
 https://mwxiao.com/chemlabelme/chemlabelme.mp4  
+
+
+---  
+# Chinese version of README   
+
+ChemLabelMe是一个用于标注和校正论文/专利中化学结构与化学信息（编号、化学名、性质等）对应关系的小工具，已用于辅助CarsiChemIE数据集的人工校正（https://github.com/carbonsilicon-ai/CarsiChemIE ）。 本软件是基于LabelMe（https://github.com/wkentaro/labelme ）修改的，修改代码后，主要增加以下功能：显示标注框ID、标签栏显示ID、非化学结构标签在标签栏缩进、双击标注框实现化学结构标签（1）与其他标签的快速匹配、增加提示窗口等。 相对于LabelMe，修改后的软件可以提高人工校正对应关系的准确性和效率。
+
+# 实例视频  
+https://mwxiao.com/chemlabelme/chemlabelme.mp4  
+
