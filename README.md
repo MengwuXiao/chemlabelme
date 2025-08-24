@@ -5,8 +5,27 @@ ChemLabelMe is a tool used for annotating and correcting the correspondence betw
  ![screenshot of the ChemLabelMe](image/example.jpg "screenshot of the ChemLabelMe")
 
 
-# example video
+# Example video
 https://mwxiao.com/chemlabelme/chemlabelme.mp4  
+
+
+# Main functions
+## Displaying annotation box IDs   
+The software has added the function of displaying Shape index, which is beneficial for different Shape positioning and matching operations. At the same time, modify the display of the label list by indentation of non chemical structure labels to display the matching situation between chemical structures and chemical information labels more clearly.  
+![screenshot of the showing/hidding shape ID](image/ShowShapeID.gif "Show/Hide Shape Index")
+
+## Quick matching of chemical structure labels (1) with other labels    
+First, double-click the chemical structure label with the mouse, and then double-click the label of the chemical structure information to achieve fast matching between chemical structure and chemical information  
+![screenshot of the showing/hidding shape ID](image/QuickMatching.gif "Quick matching of chemical structure labels (1) with other labels")
+
+## Hide labels
+Hide some tags to facilitate checking the correctness of the remaining tags.  
+![screenshot of hidding labels](image/HideLabels.gif "Hide labels")
+
+
+## Show labels 
+Only display partial labels to facilitate checking the correctness of specified labels  
+![screenshot of showing labels](image/ShowLabels.gif "Show labels")
 
 
 # Usage   
@@ -18,7 +37,7 @@ pip install labelme
 ```  
 
 ## step 2  
-Find the labelme folder (path to Anaconda3\envs\py38\Lib\site-packages\labelme), delete all files inside, and copy this code to that folder.  
+Find the LabelMe folder (path to Anaconda3\envs\py38\Lib\site-packages\labelme), delete all files inside, and copy this code to that folder.  
 
 ## step 3  
 run modified Labelme using Anaconda Prompt.   
@@ -35,6 +54,26 @@ ChemLabelMe是一个用于标注和校正论文/专利中化学结构与化学�
 
 # 实例视频  
 https://mwxiao.com/chemlabelme/chemlabelme.mp4  
+
+
+# 主要功能
+## 显示Shape的索引  
+软件增加显示Shape索引的功能，这有利于不同Shape定位与匹配操作。同时修改标签列表的显示方式，将非化学结构标签缩进显示，更清晰地显示化学结构与化学信息标签的匹配情况。    
+![screenshot of the showing/hidding shape ID](image/ShowShapeID.gif "Show/Hide Shape Index")
+
+## 快速匹配化学-非化学标签    
+首先鼠标双击化学结构标签，再双击化学结构信息的标签来实现化学结构与化学信息的快速匹配。  
+![screenshot of quick matching labels](image/QuickMatching.gif "Quick matching of chemical structure labels (1) with other labels")
+
+## 隐藏不显示部分标签  
+隐藏部分标签以利于检查其余标签的正确性。   
+![screenshot of hidding labels](image/HideLabels.gif "Hide labels")
+
+
+## 仅显示部分标签  
+仅显示部分标签以利于检查指定标签的正确性。     
+![screenshot of showing labels](image/ShowLabels.gif "Show labels")
+
 
 
 # 用法  
