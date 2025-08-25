@@ -29,7 +29,20 @@ Only display partial labels to facilitate checking the correctness of specified 
 
 ## Batch delete shapes  
 Batch delete shapes inside selected shape to speed up the correction process.  
-![screenshot of batch deleting shapes inside selected shape.gif](image/BatchDelShapes.gif "Batch delete shapes inside selected shape")
+![screenshot of batch deleting shapes inside selected shape](image/BatchDelShapes.gif "Batch delete shapes inside selected shape")
+
+
+## Filter files  
+### Filter files by the modification time of file.  
+这个功能可以帮助筛选出某个时间之后校正的文件，很多人工校正发现无误未修改的文件将隐藏。   
+This feature can help filter out files that have been corrected after a certain time, and many files that have been manually corrected and found to be correct without modification will be hidden. Based on this, the efficiency of secondary correction can be accelerated.       
+![screenshot of filtering files by the modification time of file](image/FilterFileModTime.gif "filtering label files by the modification time")
+
+
+### Filter files by labels.  
+这个功能可以帮助筛选出包含指定标签类型的文件，如下图，可以采用"TY5"筛选具有TY5标签的文件。可以采用Re的Pattern语法进行检索，例如"TY4|TY5"和"TY[4-5]"均可以检索到包含4/5标签的文件。
+This feature can help filter files containing specified label types, as shown in the figure below. You can use "TY5" to filter files with TY5 labels. Re's Pattern syntax can be used for retrieval, for example, both "TY4 | TY5" and "TY [4-5]" can retrieve files containing 4/5 labels.  
+![screenshot of filtering files by labels](image/FilterLabels.gif "filtering label files by labels")
 
 
 # Example video
@@ -90,6 +103,15 @@ ChemLabelMe是一个用于标注和校正论文/专利中化学结构与化学�
 批量删除选定Shape对象内的所有Shape对象，这样不用一个个删，在某些情况下可大大加快校正过程。  
 ![screenshot of batch delete shapes inside selected shape.gif](image/BatchDelShapes.gif "Batch deleting shapes inside selected shape")
 
+## 筛选文件  
+### 基于文件修改时间筛选文件  
+这个功能可以帮助筛选出某个时间之后校正的文件，很多人工校正发现无误未修改的文件将隐藏，可加快二次校正效率。      
+![screenshot of filtering files by the modification time of file](image/FilterFileModTime.gif "filtering label files by the modification time")
+
+
+### 基于文件标签筛选文件    
+这个功能可以帮助筛选出包含指定标签类型的文件。如下图，可以采用"TY5"筛选具有TY5标签的文件。可以采用Re的Pattern语法进行检索，例如"TY4|TY5"和"TY[4-5]"均可以检索到包含4/5标签的文件。    
+![screenshot of filtering files by labels](image/FilterLabels.gif "filtering label files by labels")
 
 # 实例视频  
 https://mwxiao.com/chemlabelme/chemlabelme.mp4  
@@ -105,7 +127,7 @@ pip install labelme
 ```  
 
 ## 步骤二  
-找到LabelMe文件夹 (一般在Anaconda3\envs\py38\Lib\site-packages\labelme)，删除该文件夹所有文件，将本项目代码（https://github.com/MengwuXiao/chemlabelme） 复制到该文件夹。  
+找到LabelMe文件夹 (一般在Anaconda3\envs\py38\Lib\site-packages\labelme)，删除该文件夹所有文件，将本项目代码（https://github.com/MengwuXiao/chemlabelme ） 复制到该文件夹。  
 
 
 ## 步骤三   
