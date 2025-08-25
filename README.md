@@ -33,13 +33,13 @@ Batch delete shapes inside selected shape to speed up the correction process.
 
 
 ## Filter files  
-### Filter files by the modification time of file.  
+### Filter files by the modification time  
 这个功能可以帮助筛选出某个时间之后校正的文件，很多人工校正发现无误未修改的文件将隐藏。   
 This feature can help filter out files that have been corrected after a certain time, and many files that have been manually corrected and found to be correct without modification will be hidden. Based on this, the efficiency of secondary correction can be accelerated.       
 ![screenshot of filtering files by the modification time of file](image/FilterFileModTime.gif "filtering label files by the modification time")
 
 
-### Filter files by labels.  
+### Filter files by labels  
 这个功能可以帮助筛选出包含指定标签类型的文件，如下图，可以采用"TY5"筛选具有TY5标签的文件。可以采用Re的Pattern语法进行检索，例如"TY4|TY5"和"TY[4-5]"均可以检索到包含4/5标签的文件。
 This feature can help filter files containing specified label types, as shown in the figure below. You can use "TY5" to filter files with TY5 labels. Re's Pattern syntax can be used for retrieval, for example, both "TY4 | TY5" and "TY [4-5]" can retrieve files containing 4/5 labels.  
 ![screenshot of filtering files by labels](image/FilterLabels.gif "filtering label files by labels")
