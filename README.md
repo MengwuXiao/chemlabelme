@@ -28,6 +28,10 @@ Only display partial labels to facilitate checking the correctness of specified 
 ![screenshot of showing labels](image/ShowLabels.gif "Show labels")
 
 
+## Batch delete shapes  
+Batch delete shapes inside selected shape to speed up the correction process.  
+![screenshot of batch deleting shapes inside selected shape.gif](image/BatchDelShapes.gif "Batch delete shapes inside selected shape")
+
 # Usage   
 ## step 1  
 ```
@@ -74,6 +78,10 @@ https://mwxiao.com/chemlabelme/chemlabelme.mp4
 仅显示部分标签以利于检查指定标签的正确性。     
 ![screenshot of showing labels](image/ShowLabels.gif "Show labels")
 
+
+## 批量删除标签  
+批量删除选定Shape对象内的所有Shape对象，这样不用一个个删，在某些情况下可大大加快校正过程。  
+![screenshot of batch delete shapes inside selected shape.gif](image/BatchDelShapes.gif "Batch deleting shapes inside selected shape")
 
 
 # 用法  
