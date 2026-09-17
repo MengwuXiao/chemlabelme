@@ -633,18 +633,33 @@ class Canvas(QtWidgets.QWidget):
 
                 else:
                     print(f"second shape selected: {shape_index}")
-                    # 第二次双击，移动第二个 shape 到第一个 shape 后面
+                    # 第二次双击：连续配对模式，移动第二个 shape 到第一个 shape 后面
                     if self.shapes[int(shape_index)].label == '1':
-                        self.canvasErrorMessageRequested.emit('请注意：', '双击的第二个shape类型不能为1，请重新选择第二个shape，点右键清空所有选择')
+                        # 双击的是结构标签：双击当前目标 = 取消选择退出连续配对；
+                        # 双击另一个结构标签 = 切换配对目标
+                        if shape_index == self.selected_shape_index:
+                            self.selected_shape_index = None  # 取消选择，退出连续配对
+                        else:
+                            self.selected_shape_index = shape_index  # 切换配对目标
+                        self.update()  # 刷新画布
+                        self.updateLabelListRequested.emit(self.shapes)  # 重建列表以清除旧高亮
+                        if self.selected_shape_index is not None:
+                            self.updateLabelColorRequested.emit([self.selected_shape_index])
                         return
                     if shape_index == self.selected_shape_index:
                         self.canvasErrorMessageRequested.emit('请注意：', '双击的第二个shape与第一个相同，请重新选择第二个shape，点右键清空所有选择')
                         return
+                    target_shape = self.shapes[self.selected_shape_index]
                     self.moveShapeAfter(shape_index, self.selected_shape_index)
-                    self.selected_shape_index = None  # 重置选择
+                    # 连续配对：不重置选择；重排后目标位置可能变化，按对象重新定位其索引
+                    self.selected_shape_index = self.shapes.index(target_shape)
+                    self.storeShapes()  # 记录 undo 备份（与拖拽移动一致）
+                    self.shapeMoved.emit()  # 触发 setDirty：未保存标记/auto_save
                     self.update()  # 刷新画布
                     # 发送信号，请求更新标签列表
                     self.updateLabelListRequested.emit(self.shapes)
+                    # 重建列表后高亮会丢失，重新高亮当前配对目标
+                    self.updateLabelColorRequested.emit([self.selected_shape_index])
 
             else:
                 self.selected_shape_index = None  # 重置双击的选择 2025-2-13

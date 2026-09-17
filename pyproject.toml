@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chemlabelme"
+version = "5.4.1"
+description = "Annotating and correcting chemical structure/information labels and their correspondence in papers/patents (modified from labelme)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8,<3.14"
+dependencies = [
+    "gdown",
+    "imgviz>=0.11",
+    "matplotlib",
+    "natsort",
+    "numpy",
+    "onnxruntime",
+    "Pillow>=2.8",
+    "PyQt5",
+    "PyYAML",
+    "qtpy!=1.11.0",
+    "scikit-image",
+    "termcolor",
+]
+
+[project.urls]
+Homepage = "https://github.com/MengwuXiao/chemlabelme"
+Upstream = "https://github.com/wkentaro/labelme"
+
+[project.scripts]
+labelme = "labelme.__main__:main"
+labelme_draw_json = "labelme.cli.draw_json:main"
+labelme_draw_label_png = "labelme.cli.draw_label_png:main"
+labelme_export_json = "labelme.cli.export_json:main"
+labelme_json_to_dataset = "labelme.cli.json_to_dataset:main"
+labelme_on_docker = "labelme.cli.on_docker:main"
+
+# The repository root itself is the `labelme` package (same layout as the
+# upstream labelme source, without its packaging files), so map the package
+# onto "." instead of moving the code into a labelme/ subdirectory.
+[tool.setuptools]
+packages = [
+    "labelme",
+    "labelme.ai",
+    "labelme.cli",
+    "labelme.config",
+    "labelme.utils",
+    "labelme.widgets",
+]
+include-package-data = false
+
+[tool.setuptools.package-dir]
+labelme = "."
+
+# Runtime data loaded relative to the package directory:
+#   icons/      -> utils/qt.py newIcon()
+#   translate/  -> __main__.py QTranslator
+#   config/     -> config/__init__.py get_default_config()
+[tool.setuptools.package-data]
+labelme = ["icons/*", "translate/*"]
+"labelme.config" = ["*.yaml"]

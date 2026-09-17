@@ -48,17 +48,32 @@ https://mwxiao.com/chemlabelme/chemlabelme.mp4
 
 
 # Usage   
-## step 1  
+## Method 1: Install with pip (recommended)  
+```
+git clone https://github.com/MengwuXiao/chemlabelme.git
+cd chemlabelme
+pip install -e .
+```  
+
+Then run the modified LabelMe:  
+```   
+labelme   
+```  
+
+Note: `-e` installs the package in editable mode, so modifications to the code take effect immediately; use `pip install .` for a normal installation. Dependencies (PyQt5, onnxruntime, etc.) are installed automatically. Python 3.8–3.13 is supported. Creating a dedicated conda environment (e.g. `conda create -n chemlabelme python=3.10 && conda activate chemlabelme`) is optional — any existing Python 3.8–3.13 environment (conda, venv or system Python) works; just run `pip install -e .` inside it.  
+
+## Method 2: Overwrite the labelme package in site-packages  
+### step 1  
 ```
 conda create -n py38 python=3.8  
 conda activate py38  
 pip install labelme  
 ```  
 
-## step 2  
+### step 2  
 Find the LabelMe folder (path to Anaconda3\envs\py38\Lib\site-packages\labelme), delete all files inside, and copy the code (https://github.com/MengwuXiao/chemlabelme ) to that folder.  
 
-## step 3  
+### step 3  
 run modified Labelme using Anaconda Prompt.   
 ```   
 conda activate py38  
@@ -116,7 +131,22 @@ https://mwxiao.com/chemlabelme/chemlabelme.mp4
 
 
 # 用法  
-## 步骤一  
+## 方法一：pip 安装（推荐）  
+```
+git clone https://github.com/MengwuXiao/chemlabelme.git
+cd chemlabelme
+pip install -e .
+```  
+
+运行修改后的LabelMe：  
+```   
+labelme   
+```   
+
+注：`-e` 为可编辑（开发）模式安装，修改代码后立即生效；普通安装使用 `pip install .`。依赖（PyQt5、onnxruntime 等）会自动安装。支持 Python 3.8–3.13。使用 conda 新建环境（如 `conda create -n chemlabelme python=3.10 && conda activate chemlabelme`）不是必须的——任何已有的 Python 3.8–3.13 环境（conda、venv 或系统 Python）均可，直接在其中执行 `pip install -e .` 即可。  
+
+## 方法二：覆盖 site-packages 中的 labelme  
+### 步骤一  
 创建Python 3.8环境，并安装labelme。 注：Python 3.10暂时会报错。  
 ```
 conda create -n py38 python=3.8  
@@ -124,11 +154,11 @@ conda activate py38
 pip install labelme  
 ```  
 
-## 步骤二  
+### 步骤二  
 找到LabelMe文件夹 (一般在Anaconda3\envs\py38\Lib\site-packages\labelme)，删除该文件夹所有文件，将本项目代码（https://github.com/MengwuXiao/chemlabelme ） 复制到该文件夹。  
 
 
-## 步骤三   
+### 步骤三   
 通过Anaconda Prompt运行修改后的LabelMe。    
 ```   
 conda activate py38  
