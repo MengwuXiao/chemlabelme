@@ -51,9 +51,10 @@ https://mwxiao.com/chemlabelme/chemlabelme.mp4
 ## Method 1: Install with pip (recommended)  
 ```
 git clone https://github.com/MengwuXiao/chemlabelme.git
+cd chemlabelme
 conda create -n chemlabelme python=3.10
 conda activate chemlabelme
-pip install -e chemlabelme
+pip install -e .
 ```  
 
 Then run the modified LabelMe:  
@@ -62,7 +63,7 @@ conda activate chemlabelme
 labelme   
 ```  
 
-Note: `-e` installs the package in editable mode, so modifications to the code take effect immediately; use `pip install chemlabelme` for a normal installation. Dependencies (PyQt5, onnxruntime, etc.) are installed automatically. Python 3.8–3.11 is supported.  
+Note: `-e` installs the package in editable mode, so modifications to the code take effect immediately; use `pip install .` for a normal installation. Dependencies (PyQt5, onnxruntime, etc.) are installed automatically. Python 3.8–3.11 is supported.  
 
 ## Method 2: Overwrite the labelme package in site-packages  
 ### step 1  
@@ -136,9 +137,10 @@ https://mwxiao.com/chemlabelme/chemlabelme.mp4
 ## 方法一：pip 安装（推荐）  
 ```
 git clone https://github.com/MengwuXiao/chemlabelme.git
+cd chemlabelme
 conda create -n chemlabelme python=3.10
 conda activate chemlabelme
-pip install -e chemlabelme
+pip install -e .
 ```  
 
 运行修改后的LabelMe：  
@@ -147,7 +149,7 @@ conda activate chemlabelme
 labelme   
 ```   
 
-注：`-e` 为可编辑（开发）模式安装，修改代码后立即生效；普通安装使用 `pip install chemlabelme`。依赖（PyQt5、onnxruntime 等）会自动安装。支持 Python 3.8–3.11。  
+注：`-e` 为可编辑（开发）模式安装，修改代码后立即生效；普通安装使用 `pip install .`。依赖（PyQt5、onnxruntime 等）会自动安装。支持 Python 3.8–3.11。  
 
 ## 方法二：覆盖 site-packages 中的 labelme  
 ### 步骤一  
