@@ -63,7 +63,7 @@ conda activate chemlabelme
 labelme   
 ```  
 
-Note: `-e` installs the package in editable mode, so modifications to the code take effect immediately; use `pip install .` for a normal installation. Dependencies (PyQt5, onnxruntime, etc.) are installed automatically. Python 3.8–3.11 is supported.  
+Note: `-e` installs the package in editable mode, so modifications to the code take effect immediately; use `pip install .` for a normal installation. Dependencies (PyQt5, onnxruntime, etc.) are installed automatically. Python 3.8–3.13 is supported.  
 
 ## Method 2: Overwrite the labelme package in site-packages  
 ### step 1  
@@ -149,7 +149,7 @@ conda activate chemlabelme
 labelme   
 ```   
 
-注：`-e` 为可编辑（开发）模式安装，修改代码后立即生效；普通安装使用 `pip install .`。依赖（PyQt5、onnxruntime 等）会自动安装。支持 Python 3.8–3.11。  
+注：`-e` 为可编辑（开发）模式安装，修改代码后立即生效；普通安装使用 `pip install .`。依赖（PyQt5、onnxruntime 等）会自动安装。支持 Python 3.8–3.13。  
 
 ## 方法二：覆盖 site-packages 中的 labelme  
 ### 步骤一  

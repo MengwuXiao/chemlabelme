@@ -8,7 +8,7 @@ version = "5.4.1"
 description = "Annotating and correcting chemical structure/information labels and their correspondence in papers/patents (modified from labelme)"
 readme = "README.md"
 license = { text = "MIT" }
-requires-python = ">=3.8,<3.12"
+requires-python = ">=3.8,<3.14"
 dependencies = [
     "gdown",
     "imgviz>=0.11",
