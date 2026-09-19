@@ -436,6 +436,14 @@ class MainWindow(QtWidgets.QMainWindow):
             self.tr("Paste copied polygons"),
             enabled=False,
         )
+        copyImage = action(
+            self.tr("Copy Image"),
+            self.copyImage,
+            None,
+            "copy",
+            self.tr("Copy the image to clipboard"),
+            enabled=False,
+        )
         undoLastPoint = action(
             self.tr("Undo last point"),
             self.canvas.undoLastPoint,
@@ -643,6 +651,7 @@ class MainWindow(QtWidgets.QMainWindow):
             duplicate=duplicate,
             copy=copy,
             paste=paste,
+            copyImage=copyImage,
             undoLastPoint=undoLastPoint,
             undo=undo,
             removePoint=removePoint,
@@ -702,6 +711,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 undo,
                 undoLastPoint,
                 removePoint,
+                None,
+                copyImage,
             ),
             onLoadActive=(
                 close,
@@ -714,6 +725,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 createAiPolygonMode,
                 createAiMaskMode,
                 editMode,
+                copyImage,
                 brightnessContrast,
             ),
             onShapesPresent=(saveAs, hideAll, showAll, toggleAll),
@@ -1394,6 +1406,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def copySelectedShape(self):
         self._copied_shapes = [s.copy() for s in self.canvas.selectedShapes]
         self.actions.paste.setEnabled(len(self._copied_shapes) > 0)
+
+    def copyImage(self):
+        if self.canvas.pixmap is not None and not self.canvas.pixmap.isNull():
+            QtWidgets.QApplication.clipboard().setPixmap(self.canvas.pixmap)
 
     def labelSelectionChanged(self):
         if self._noSelectionSlot:
