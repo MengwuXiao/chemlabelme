@@ -281,6 +281,16 @@
         <translation>为选中的多边形创建副本</translation>
     </message>
     <message>
+        <location filename="../app.py" line="322"/>
+        <source>Copy Image</source>
+        <translation>复制图片</translation>
+    </message>
+    <message>
+        <location filename="../app.py" line="322"/>
+        <source>Copy the image to clipboard</source>
+        <translation>将图片复制到剪贴板</translation>
+    </message>
+    <message>
         <location filename="../app.py" line="314"/>
         <source>Undo last point</source>
         <translation>撤销最后的控制点</translation>

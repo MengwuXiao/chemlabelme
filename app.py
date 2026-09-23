@@ -9,7 +9,6 @@ import re
 import json
 import webbrowser
 
-import imgviz
 import natsort
 from qtpy import QtCore
 from qtpy import QtGui
@@ -24,6 +23,7 @@ from labelme.label_file import LabelFile
 from labelme.label_file import LabelFileError
 from labelme.logger import logger
 from labelme.shape import Shape
+from labelme.utils.colormap import LABEL_COLORMAP
 from labelme.widgets import BrightnessContrastDialog
 from labelme.widgets import Canvas
 from labelme.widgets import FileDialogPreview
@@ -41,9 +41,6 @@ from . import utils
 
 # TODO(unknown):
 # - Zoom is too "steppy".
-
-
-LABEL_COLORMAP = imgviz.label_colormap()
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -436,6 +433,14 @@ class MainWindow(QtWidgets.QMainWindow):
             self.tr("Paste copied polygons"),
             enabled=False,
         )
+        copyImage = action(
+            self.tr("Copy Image"),
+            self.copyImage,
+            None,
+            "copy",
+            self.tr("Copy the image to clipboard"),
+            enabled=False,
+        )
         undoLastPoint = action(
             self.tr("Undo last point"),
             self.canvas.undoLastPoint,
@@ -643,6 +648,7 @@ class MainWindow(QtWidgets.QMainWindow):
             duplicate=duplicate,
             copy=copy,
             paste=paste,
+            copyImage=copyImage,
             undoLastPoint=undoLastPoint,
             undo=undo,
             removePoint=removePoint,
@@ -702,6 +708,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 undo,
                 undoLastPoint,
                 removePoint,
+                None,
+                copyImage,
             ),
             onLoadActive=(
                 close,
@@ -714,6 +722,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 createAiPolygonMode,
                 createAiMaskMode,
                 editMode,
+                copyImage,
                 brightnessContrast,
             ),
             onShapesPresent=(saveAs, hideAll, showAll, toggleAll),
@@ -1394,6 +1403,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def copySelectedShape(self):
         self._copied_shapes = [s.copy() for s in self.canvas.selectedShapes]
         self.actions.paste.setEnabled(len(self._copied_shapes) > 0)
+
+    def copyImage(self):
+        if self.canvas.pixmap is not None and not self.canvas.pixmap.isNull():
+            QtWidgets.QApplication.clipboard().setPixmap(self.canvas.pixmap)
 
     def labelSelectionChanged(self):
         if self._noSelectionSlot:
