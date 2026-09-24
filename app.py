@@ -1110,6 +1110,13 @@ class MainWindow(QtWidgets.QMainWindow):
             menu.addAction(action)
 
     def popLabelListMenu(self, point):
+        # 右键未选中的条目时先选中它，使菜单作用于光标下的条目；
+        # 右键已选中的条目（含多选）时保持当前选择不动
+        index = self.labelList.indexAt(point)
+        if index.isValid() and not self.labelList.selectionModel().isSelected(index):
+            self.labelList.selectionModel().setCurrentIndex(
+                index, QtCore.QItemSelectionModel.ClearAndSelect
+            )
         self.menus.labelList.exec_(self.labelList.mapToGlobal(point))
 
     def validateLabel(self, label):
@@ -1124,24 +1131,51 @@ class MainWindow(QtWidgets.QMainWindow):
                     return True
         return False
 
+    def setLabelListItemText(self, item, shape):
+        """更新标签栏中单条目显示（格式与 LabelListWidget.updateLabelList 一致）"""
+        if shape.group_id is None:
+            text = shape.label
+        else:
+            text = "{} ({})".format(shape.label, shape.group_id)
+        layer_str = '' if str(shape.label) == '1' else '++++'
+        item.setText(
+            '{} <font color="#{:02x}{:02x}{:02x}">{} ● {}</font>'.format(
+                "{:02d}".format(shape.shape_id), *shape.fill_color.getRgb()[:3], layer_str, html.escape(text)
+            )
+        )
+
     def editLabel(self, item=None):
         if item and not isinstance(item, LabelListWidgetItem):
             raise TypeError("item must be LabelListWidgetItem type")
 
         if not self.canvas.editing():
             return
-        if not item:
-            item = self.currentItem()
-        if item is None:
+        if item:
+            items = [item]
+        else:
+            items = self.labelList.selectedItems()  # 多选时批量修改 2026-9-24
+            if not items:
+                item = self.currentItem()
+                items = [item] if item is not None else []
+        items = [i for i in items if i.shape() is not None]
+        if not items:
             return
-        shape = item.shape()
-        if shape is None:
-            return
+
+        shapes = [i.shape() for i in items]
+        first_shape = shapes[0]
+        batch = len(shapes) > 1
+        if batch:
+            # 批量修改：预填共同标签（不一致则留空），
+            # group_id/description 留空表示不修改，flags 不在批量中修改
+            labels = {s.label for s in shapes}
+            text = labels.pop() if len(labels) == 1 else ""
+        else:
+            text = first_shape.label
         text, flags, group_id, description = self.labelDialog.popUp(
-            text=shape.label,
-            flags=shape.flags,
-            group_id=shape.group_id,
-            description=shape.description,
+            text=text,
+            flags=first_shape.flags,
+            group_id=None if batch else first_shape.group_id,
+            description=None if batch else first_shape.description,
         )
         if text is None:
             return
@@ -1153,26 +1187,27 @@ class MainWindow(QtWidgets.QMainWindow):
                 ),
             )
             return
-        shape.label = text
-        shape.flags = flags
-        shape.group_id = group_id
-        shape.description = description
-        layer_str = '' if str(shape.label) == '1' else '++++'
-        self._update_shape_color(shape)
-        if shape.group_id is None:
-            item.setText(
-                '{} <font color="#{:02x}{:02x}{:02x}">{} ● {}</font>'.format(
-                    "{:02d}".format(shape.shape_id), *shape.fill_color.getRgb()[:3], layer_str, html.escape(text)
-                )
-            )
-        else:
-            item.setText("{} ({})".format(shape.label, shape.group_id))
+        for label_item, shape in zip(items, shapes):
+            shape.label = text
+            if batch:
+                # 批量修改时留空的字段保持不变
+                if group_id is not None:
+                    shape.group_id = group_id
+                if description:
+                    shape.description = description
+            else:
+                shape.flags = flags
+                shape.group_id = group_id
+                shape.description = description
+            self._update_shape_color(shape)
+            self.setLabelListItemText(label_item, shape)
+        self.canvas.update()
         self.setDirty()
-        if self.uniqLabelList.findItemByLabel(shape.label) is None:
-            item = self.uniqLabelList.createItemFromLabel(shape.label)
-            self.uniqLabelList.addItem(item)
-            rgb = self._get_rgb_by_label(shape.label)
-            self.uniqLabelList.setItemLabel(item, shape.label, rgb)
+        if self.uniqLabelList.findItemByLabel(text) is None:
+            uniq_item = self.uniqLabelList.createItemFromLabel(text)
+            self.uniqLabelList.addItem(uniq_item)
+            rgb = self._get_rgb_by_label(text)
+            self.uniqLabelList.setItemLabel(uniq_item, text, rgb)
 
     def fileSearchChanged(self):
         self.importDirImages(
@@ -1213,7 +1248,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions.delete.setEnabled(n_selected)
         self.actions.duplicate.setEnabled(n_selected)
         self.actions.copy.setEnabled(n_selected)
-        self.actions.edit.setEnabled(n_selected == 1)
+        self.actions.edit.setEnabled(n_selected > 0)  # 多选时也可编辑（批量修改标签）
 
     def addLabel(self, shape):
         if shape.group_id is None:
@@ -1232,12 +1267,7 @@ class MainWindow(QtWidgets.QMainWindow):
             action.setEnabled(True)
 
         self._update_shape_color(shape)
-        layer_str = '' if str(shape.label) == '1' else '++++'
-        label_list_item.setText(
-            '{} <font color="#{:02x}{:02x}{:02x}">{} ● {}</font>'.format(
-                "{:02d}".format(shape.shape_id), *shape.fill_color.getRgb()[:3], layer_str, html.escape(text)
-            )
-        )
+        self.setLabelListItemText(label_list_item, shape)
 
     def _update_shape_color(self, shape):
         r, g, b = self._get_rgb_by_label(shape.label)
