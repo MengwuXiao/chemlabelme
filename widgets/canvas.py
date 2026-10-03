@@ -822,13 +822,15 @@ class Canvas(QtWidgets.QWidget):
                 x2 = point2.x()  # 提取 x 坐标
                 y2 = point2.y()  # 提取 y 坐标
                 # 绘制矩形框
+                # 注: drawRect/drawText 的 int 重载不接受 float(PyQt5 5.15 会直接抛 TypeError),
+                # 而标注坐标都是 float, 这里统一转成 int
                 p.setPen(QtGui.QColor(0, 255, 0))  # 设置框的颜色为绿色
-                p.drawRect(x1, y1, x2 - x1, y2 - y1)
+                p.drawRect(int(x1), int(y1), int(x2 - x1), int(y2 - y1))
                 # 显示框的 ID
                 if hasattr(shape, 'shape_id'):
                     p.setPen(QtGui.QColor(255, 0, 0))  # 设置文本颜色为红色
                     p.setFont(QtGui.QFont("Arial", 30))  # 设置字体
-                    p.drawText(x1, y1 - 20, str(shape.shape_id))  # 在框的左上角显示 ID
+                    p.drawText(int(x1), int(y1) - 20, str(shape.shape_id))  # 在框的左上角显示 ID
 
         # draw crosshair
         if (

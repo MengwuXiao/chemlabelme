@@ -94,6 +94,24 @@ class LabelListWidgetItem(QtGui.QStandardItem):
         return '{}("{}")'.format(self.__class__.__name__, self.text())
 
 
+def format_shape_list_item_text(shape):
+    """标签栏条目的显示文本（MainWindow.setLabelListItemText 与本文件 updateLabelList 共用）
+
+    shape.other_data["text"] 为形状上人工填写的文字注释，有值时附在标签后面显示。
+    """
+    if shape.group_id is None:
+        text = shape.label
+    else:
+        text = "{} ({})".format(shape.label, shape.group_id)
+    annotation = (shape.other_data or {}).get("text") or ""
+    if annotation:
+        text = "{} | {}".format(text, annotation)
+    layer_str = '' if str(shape.label) == '1' else '++++'
+    return '{} <font color="#{:02x}{:02x}{:02x}">{} ● {}</font>'.format(
+        "{:02d}".format(shape.shape_id), *shape.fill_color.getRgb()[:3], layer_str, html.escape(text)
+    )
+
+
 class StandardItemModel(QtGui.QStandardItemModel):
     itemDropped = QtCore.Signal()
 
@@ -183,17 +201,8 @@ class LabelListWidget(QtWidgets.QListView):
         self.clear()  # 清空当前列表
 
         for i, shape in enumerate(shapes):
-            if shape.group_id is None:
-                text = shape.label
-            else:
-                text = "{} ({})".format(shape.label, shape.group_id)
-            label_list_item = LabelListWidgetItem(text, shape)
-            layer_str = '' if str(shape.label) == '1' else '++++'
-            label_list_item.setText(
-                '{} <font color="#{:02x}{:02x}{:02x}">{} ● {}</font>'.format(
-                    "{:02d}".format(shape.shape_id), *shape.fill_color.getRgb()[:3], layer_str, html.escape(text)
-                )
-            )
+            label_list_item = LabelListWidgetItem(shape.label, shape)
+            label_list_item.setText(format_shape_list_item_text(shape))
 
             # # 设置颜色或其他样式
             # if hasattr(shape, 'fill_color'):

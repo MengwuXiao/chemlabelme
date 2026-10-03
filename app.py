@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import functools
-import html
 import math
 import os
 import os.path as osp
@@ -33,6 +32,7 @@ from labelme.widgets import LabelListWidgetItem
 from labelme.widgets import ToolBar
 from labelme.widgets import UniqueLabelQListWidget
 from labelme.widgets import ZoomWidget
+from labelme.widgets import format_shape_list_item_text
 
 from . import utils
 
@@ -614,6 +614,15 @@ class MainWindow(QtWidgets.QMainWindow):
             enabled=False,
         )
 
+        editText = action(
+            self.tr("&Edit Text"),
+            self.editText,
+            shortcuts["edit_text"],
+            "edit",
+            self.tr("Add or modify the text annotation of the selected shape"),
+            enabled=False,
+        )
+
         fill_drawing = action(
             self.tr("Fill Drawing Polygon"),
             self.canvas.setFillDrawing,
@@ -628,7 +637,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Lavel list context menu.
         labelMenu = QtWidgets.QMenu()
-        utils.addActions(labelMenu, (edit, delete))
+        utils.addActions(labelMenu, (edit, editText, delete))
         self.labelList.setContextMenuPolicy(Qt.CustomContextMenu)
         self.labelList.customContextMenuRequested.connect(self.popLabelListMenu)
 
@@ -645,6 +654,7 @@ class MainWindow(QtWidgets.QMainWindow):
             toggleKeepPrevMode=toggle_keep_prev_mode,
             delete=delete,
             edit=edit,
+            editText=editText,
             duplicate=duplicate,
             copy=copy,
             paste=paste,
@@ -677,6 +687,7 @@ class MainWindow(QtWidgets.QMainWindow):
             # XXX: need to add some actions here to activate the shortcut
             editMenu=(
                 edit,
+                editText,
                 duplicate,
                 copy,
                 paste,
@@ -701,6 +712,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 createAiMaskMode,
                 editMode,
                 edit,
+                editText,
                 duplicate,
                 copy,
                 paste,
@@ -1133,16 +1145,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def setLabelListItemText(self, item, shape):
         """更新标签栏中单条目显示（格式与 LabelListWidget.updateLabelList 一致）"""
-        if shape.group_id is None:
-            text = shape.label
-        else:
-            text = "{} ({})".format(shape.label, shape.group_id)
-        layer_str = '' if str(shape.label) == '1' else '++++'
-        item.setText(
-            '{} <font color="#{:02x}{:02x}{:02x}">{} ● {}</font>'.format(
-                "{:02d}".format(shape.shape_id), *shape.fill_color.getRgb()[:3], layer_str, html.escape(text)
-            )
-        )
+        item.setText(format_shape_list_item_text(shape))
 
     def editLabel(self, item=None):
         if item and not isinstance(item, LabelListWidgetItem):
@@ -1209,6 +1212,63 @@ class MainWindow(QtWidgets.QMainWindow):
             rgb = self._get_rgb_by_label(text)
             self.uniqLabelList.setItemLabel(uniq_item, text, rgb)
 
+    def editText(self, item=None):
+        """为形状添加/修改文字注释（存在 shape.other_data["text"]，随 JSON 自动保存）
+
+        只作用于一个形状：多选时取当前项（右键点中的那一个）。清空文字即删除注释。
+        """
+        if item and not isinstance(item, LabelListWidgetItem):
+            raise TypeError("item must be LabelListWidgetItem type")
+
+        if not self.canvas.editing():
+            return
+        if item is not None:
+            items = [item]
+        else:
+            items = self.labelList.selectedItems()
+            if not items:
+                item = self.currentItem()
+                items = [item] if item is not None else []
+            if len(items) > 1:
+                # 多选时只编辑右键点中的那一个：优先标签栏当前项，其次画布光标下的形状
+                index = self.labelList.currentIndex()
+                current = (
+                    self.labelList.model().itemFromIndex(index) if index.isValid() else None
+                )
+                if current is not None and current in items:
+                    items = [current]
+                elif self.canvas.hShape is not None and self.canvas.hShape.selected:
+                    try:
+                        items = [self.labelList.findItemByShape(self.canvas.hShape)]
+                    except ValueError:
+                        items = items[:1]
+                else:
+                    items = items[:1]
+        items = [i for i in items if i is not None and i.shape() is not None]
+        if not items:
+            return
+        shape = items[0].shape()
+
+        text, ok = QtWidgets.QInputDialog.getText(
+            self,
+            self.tr("Edit Text") + " (Shape {})".format(shape.shape_id),
+            self.tr("Text annotation:"),
+            QtWidgets.QLineEdit.Normal,
+            (shape.other_data or {}).get("text") or "",
+        )
+        if not ok:
+            return
+        text = text.strip()
+        old_text = (shape.other_data or {}).get("text") or ""
+        if text == old_text:
+            return
+        if text:
+            shape.other_data["text"] = text
+        else:
+            shape.other_data.pop("text", None)
+        self.setLabelListItemText(items[0], shape)
+        self.setDirty()
+
     def fileSearchChanged(self):
         self.importDirImages(
             self.lastOpenDir,
@@ -1249,6 +1309,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actions.duplicate.setEnabled(n_selected)
         self.actions.copy.setEnabled(n_selected)
         self.actions.edit.setEnabled(n_selected > 0)  # 多选时也可编辑（批量修改标签）
+        self.actions.editText.setEnabled(n_selected > 0)
 
     def addLabel(self, shape):
         if shape.group_id is None:

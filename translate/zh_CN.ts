@@ -434,6 +434,26 @@ Polygons</source>
         <translation>修改选中多边形的标签</translation>
     </message>
     <message>
+        <location filename="../app.py" line="618"/>
+        <source>&amp;Edit Text</source>
+        <translation>编辑文字(&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../app.py" line="622"/>
+        <source>Add or modify the text annotation of the selected shape</source>
+        <translation>为选中的形状添加或修改文字注释</translation>
+    </message>
+    <message>
+        <location filename="../app.py" line="1262"/>
+        <source>Edit Text</source>
+        <translation>编辑文字</translation>
+    </message>
+    <message>
+        <location filename="../app.py" line="1263"/>
+        <source>Text annotation:</source>
+        <translation>文字注释：</translation>
+    </message>
+    <message>
         <location filename="../app.py" line="384"/>
         <source>Shape &amp;Line Color</source>
         <translation>形状描边颜色(&amp;L)</translation>
