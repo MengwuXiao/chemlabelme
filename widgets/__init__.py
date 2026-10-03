@@ -13,6 +13,7 @@ from .label_dialog import LabelQLineEdit
 
 from .label_list_widget import LabelListWidget
 from .label_list_widget import LabelListWidgetItem
+from .label_list_widget import format_shape_list_item_text
 
 from .tool_bar import ToolBar
 
